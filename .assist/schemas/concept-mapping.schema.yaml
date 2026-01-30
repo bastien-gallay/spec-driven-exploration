@@ -1,0 +1,108 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Concept Mapping Schema
+description: Schema for framework concept mapping files
+type: object
+required:
+  - schema_version
+  - metadata
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  metadata:
+    type: object
+    required:
+      - framework
+      - last_updated
+    properties:
+      framework:
+        type: string
+        enum: [spec-kit, bmad, openspec]
+      last_updated:
+        type: string
+        format: date
+  relationships:
+    type: array
+    description: Internal relationships between concepts within this framework
+    items:
+      type: object
+      required:
+        - source
+        - target
+        - type
+      properties:
+        source:
+          type: string
+          description: Term or artifact ID
+        target:
+          type: string
+          description: Term or artifact ID
+        type:
+          type: string
+          enum:
+            - precedes
+            - produces
+            - validates
+            - contains
+            - references
+            - requires
+            - enables
+        notes:
+          type: string
+  cross_framework_mappings:
+    type: array
+    description: How this framework's concepts map to other frameworks
+    items:
+      type: object
+      required:
+        - local_term
+        - mappings
+      properties:
+        local_term:
+          type: string
+          description: Term ID from this framework
+        mappings:
+          type: array
+          items:
+            type: object
+            required:
+              - framework
+              - term
+              - match_level
+            properties:
+              framework:
+                type: string
+                enum: [spec-kit, bmad, openspec, common-sdd]
+              term:
+                type: string
+                description: Equivalent term in target framework
+              match_level:
+                type: string
+                enum:
+                  - exact
+                  - partial
+                  - low
+                  - none
+              notes:
+                type: string
+                description: Explanation of mapping differences
+  unique_concepts:
+    type: array
+    description: Concepts that have no equivalent in other frameworks
+    items:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - why_unique
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        why_unique:
+          type: string

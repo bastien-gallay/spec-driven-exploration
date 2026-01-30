@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../schemas/status.schema.yaml
+schema_version: "1.0"
+analysis_type: synthesis
+last_updated: "2026-01-30T00:00:00Z"
+
+stages:
+  synthesis:
+    cross_cutting_conclusions:
+      status: pending
+    recommendations:
+      status: pending
+  validation:
+    last_run: null
+    status: not-started
+    errors: 0
+    warnings: 0
+
+overall_completion: 0

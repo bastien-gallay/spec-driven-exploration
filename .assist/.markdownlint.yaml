@@ -1,0 +1,26 @@
+# Markdownlint configuration for .assist/ directory
+# These files are prompt templates with repeated structure
+
+# Disable duplicate heading check (templates reuse section names)
+MD024: false
+
+# Allow longer lines in tables and code blocks
+MD013:
+  line_length: 120
+  tables: false
+  code_blocks: false
+
+# Disable table column style (ASCII diagrams don't follow table rules)
+MD060: false
+
+# Disable blanks around fences (nested markdown examples in code blocks)
+MD031: false
+
+# Disable blanks around lists (template examples)
+MD032: false
+
+# Disable blanks around headings (compact template examples)
+MD022: false
+
+# Disable fenced code language requirement (some examples are intentionally generic)
+MD040: false

@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Glossary Schema
+description: Schema for framework glossary files
+type: object
+required:
+  - schema_version
+  - metadata
+  - terms
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  metadata:
+    type: object
+    required:
+      - framework
+      - last_updated
+    properties:
+      framework:
+        type: string
+        enum: [spec-kit, bmad, openspec]
+      last_updated:
+        type: string
+        format: date
+      source_commit:
+        type: string
+  terms:
+    type: array
+    items:
+      type: object
+      required:
+        - id
+        - term
+        - category
+        - definition
+      properties:
+        id:
+          type: string
+          pattern: "^[a-z][a-z0-9-]*$"
+          description: Unique kebab-case identifier
+        term:
+          type: string
+          description: Display name
+        category:
+          type: string
+          enum:
+            - core_concept
+            - workflow_term
+            - artifact_term
+            - technical_term
+            - role_term
+            - quality_term
+            - directory_term
+        definition:
+          type: string
+          description: 1-3 sentence definition
+        aliases:
+          type: array
+          items:
+            type: string
+        related_terms:
+          type: array
+          items:
+            type: string
+          description: References to other term IDs
+        source_refs:
+          type: array
+          items:
+            type: string
+          description: References to source documentation

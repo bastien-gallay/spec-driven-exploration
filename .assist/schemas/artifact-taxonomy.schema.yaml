@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Artifact Taxonomy Schema
+description: Schema for framework artifact taxonomy files
+type: object
+required:
+  - schema_version
+  - metadata
+  - artifacts
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  metadata:
+    type: object
+    required:
+      - framework
+      - last_updated
+    properties:
+      framework:
+        type: string
+        enum: [spec-kit, bmad, openspec]
+      last_updated:
+        type: string
+        format: date
+  artifacts:
+    type: array
+    items:
+      type: object
+      required:
+        - id
+        - name
+        - file_pattern
+        - description
+        - classifications
+      properties:
+        id:
+          type: string
+          pattern: "^[a-z][a-z0-9-]*$"
+          description: Unique kebab-case identifier
+        name:
+          type: string
+          description: Display name
+        file_pattern:
+          type: string
+          description: File path pattern (e.g., "specs/{feature}/spec.md")
+        description:
+          type: string
+          description: What this artifact represents
+        classifications:
+          type: object
+          required:
+            - purpose
+            - lifecycle
+            - format
+          properties:
+            purpose:
+              type: string
+              enum:
+                - governance
+                - specification
+                - design
+                - execution
+                - validation
+            lifecycle:
+              type: string
+              enum:
+                - once_per_project
+                - once_per_feature
+                - per_session
+                - continuous
+            creator:
+              type: string
+              description: Role or command that creates this artifact
+            format:
+              type: string
+              enum:
+                - markdown
+                - yaml
+                - json
+                - code
+                - mixed
+        sections:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - required
+            properties:
+              name:
+                type: string
+              required:
+                type: boolean
+              purpose:
+                type: string
+        dependencies:
+          type: object
+          properties:
+            requires:
+              type: array
+              items:
+                type: string
+              description: Artifact IDs that must exist before this one
+            produces:
+              type: array
+              items:
+                type: string
+              description: Artifact IDs created from this one

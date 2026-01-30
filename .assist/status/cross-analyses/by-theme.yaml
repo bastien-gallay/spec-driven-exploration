@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../schemas/status.schema.yaml
+schema_version: "1.0"
+analysis_type: by-theme
+last_updated: "2026-01-30T00:00:00Z"
+
+stages:
+  themes:
+    concepts:
+      status: pending
+    workflows:
+      status: pending
+    artifacts:
+      status: pending
+    roles:
+      status: pending
+    tooling:
+      status: pending
+  validation:
+    last_run: null
+    status: not-started
+    errors: 0
+    warnings: 0
+
+overall_completion: 0

@@ -1,0 +1,119 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Status Tracking Schema
+description: Schema for tracking analysis workflow progress
+type: object
+required:
+  - schema_version
+  - last_updated
+  - stages
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  framework:
+    type: string
+    enum: [spec-kit, bmad, openspec]
+    description: Framework name (for framework-analysis status files)
+  analysis_type:
+    type: string
+    enum: [by-theme, pairwise, synthesis]
+    description: Analysis type (for cross-analysis status files)
+  last_updated:
+    type: string
+    format: date-time
+  stages:
+    type: object
+    description: Progress tracking for each workflow stage
+    properties:
+      documents:
+        type: object
+        properties:
+          key_sources:
+            $ref: "#/$defs/step_status"
+          reading_notes:
+            $ref: "#/$defs/step_status"
+      glossaries:
+        type: object
+        properties:
+          glossary:
+            $ref: "#/$defs/step_status_with_count"
+          artifact_taxonomy:
+            $ref: "#/$defs/step_status_with_count"
+          concept_mapping:
+            $ref: "#/$defs/step_status_with_count"
+      descriptions:
+        type: object
+        properties:
+          philosophy:
+            $ref: "#/$defs/step_status"
+          workflow:
+            $ref: "#/$defs/step_status"
+          context_organization:
+            $ref: "#/$defs/step_status"
+          specific_features:
+            $ref: "#/$defs/step_status"
+      summary:
+        type: object
+        properties:
+          executive_summary:
+            $ref: "#/$defs/step_status"
+          conclusions:
+            $ref: "#/$defs/step_status"
+      validation:
+        type: object
+        properties:
+          last_run:
+            oneOf:
+              - type: string
+                format: date-time
+              - type: "null"
+            description: Last validation run timestamp, null if never run
+          status:
+            type: string
+            enum: [not-started, passed, passed-with-warnings, failed]
+          errors:
+            type: integer
+            minimum: 0
+          warnings:
+            type: integer
+            minimum: 0
+  overall_completion:
+    type: integer
+    minimum: 0
+    maximum: 100
+    description: Percentage completion (0-100)
+  ready_for_cross_analysis:
+    type: boolean
+    description: Whether this framework analysis is complete enough for cross-analysis
+
+$defs:
+  step_status:
+    type: object
+    required:
+      - status
+    properties:
+      status:
+        type: string
+        enum: [pending, in-progress, completed, skipped]
+      last_updated:
+        type: string
+        format: date-time
+      notes:
+        type: string
+  step_status_with_count:
+    type: object
+    required:
+      - status
+    properties:
+      status:
+        type: string
+        enum: [pending, in-progress, completed, skipped]
+      last_updated:
+        type: string
+        format: date-time
+      item_count:
+        type: integer
+        minimum: 0
+      notes:
+        type: string
