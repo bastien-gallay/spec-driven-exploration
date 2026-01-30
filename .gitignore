@@ -8,3 +8,6 @@ docs/references/OpenSpec/
 
 # Cursor directory
 .cursor/
+
+# Gemini directory
+.gemini/
