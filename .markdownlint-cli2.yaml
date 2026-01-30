@@ -1,0 +1,17 @@
+# Root markdownlint configuration
+# Project-wide defaults for Markdown linting
+
+config:
+  # Line length - allow longer lines for tables and links
+  MD013:
+    line_length: 120
+    tables: false
+    code_blocks: false
+
+  # Table column style - allow any consistent style
+  MD060: false
+
+# Ignore reference repositories (external sources)
+ignores:
+  - "docs/references/**"
+  - "node_modules/**"
