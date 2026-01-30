@@ -1,17 +1,25 @@
-# Documentation — Formation Spec-Driven Development
+# Documentation — Spec-Driven Development Training
 
-Index de la documentation du projet.
+Project documentation index.
 
-## Arborescences
+## Directory Structure
 
-| Arborescence | Rôle |
-|--------------|------|
-| [references/](./references/) | Dépôts clonés (spec-kit, BMAD, OpenSpec) — sources à analyser |
-| [analyses-specifiques/](./analyses-specifiques/) | Analyses par famille : documents, référentiels, descriptions et synthèses (spec-kit, BMAD, OpenSpec) |
-| [analyses-croisees/](./analyses-croisees/) | Rédaction des analyses croisées (par thématique, par paire, synthèse globale) |
+| Directory               | Purpose                           |
+|-------------------------|-----------------------------------|
+| [references/][]         | Cloned repos — sources to analyze |
+| [framework-analyses/][] | Framework-specific analyses       |
+| [cross-analyses/][]     | Cross-framework comparisons       |
+| [adr/][]                | Architecture Decision Records     |
 
-## Parcours recommandé
+[references/]: ./references/
+[framework-analyses/]: ./framework-analyses/
+[cross-analyses/]: ./cross-analyses/
+[adr/]: ./adr/
 
-1. **Références** — Installer et parcourir les dépôts clonés.
-2. **Analyses spécifiques** — Remplir chaque famille (documents, référentiels, descriptions, synthèse).
-3. **Analyses croisées** — Comparer les approches (par thème ou par paire), puis consolider dans la synthèse.
+## Recommended Workflow
+
+1. **References** — Install and explore the cloned repositories.
+2. **Framework Analyses** — Complete each framework analysis (documents,
+   glossaries, descriptions, summary).
+3. **Cross-Analyses** — Compare approaches (by theme or pairwise), then
+   consolidate in the summary.
