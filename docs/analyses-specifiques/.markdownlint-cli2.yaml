@@ -1,0 +1,12 @@
+# markdownlint configuration for SDD framework analyses
+# Disables rules that are too strict for analytical documentation
+
+config:
+  # Line length - allow longer lines for tables and links
+  MD013:
+    line_length: 120
+    tables: false
+    code_blocks: false
+
+  # Table column style - allow any consistent style
+  MD060: false
