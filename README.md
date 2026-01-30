@@ -36,7 +36,15 @@ docs/
 git clone https://github.com/bastiengallay/spec-driven-exploration.git
 cd spec-driven-exploration
 
-# Pull all reference repositories
+# Clone all reference repositories
+just clone-refs
+```
+
+### Updating
+
+To update the reference repositories:
+
+```bash
 just pull-refs
 ```
 

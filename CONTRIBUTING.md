@@ -61,6 +61,9 @@ Update glossary format to YAML
 Use `just` to run common tasks:
 
 ```bash
+# Clone reference repositories (initial setup)
+just clone-refs
+
 # Pull latest changes from reference repositories
 just pull-refs
 ```

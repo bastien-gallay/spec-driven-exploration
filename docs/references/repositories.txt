@@ -1,0 +1,6 @@
+https://github.com/github/spec-kit.git docs/references/spec-kit
+https://github.com/bmad-code-org/BMAD-METHOD.git docs/references/BMAD/BMAD-METHOD
+https://github.com/bmad-code-org/bmad-module-game-dev-studio.git docs/references/BMAD/bmad-module-game-dev-studio
+https://github.com/bmad-code-org/bmad-module-creative-intelligence-suite.git docs/references/BMAD/bmad-module-creative-intelligence-suite
+https://github.com/bmad-code-org/bmad-method-wds-expansion.git docs/references/BMAD/bmad-method-wds-expansion
+https://github.com/Fission-AI/OpenSpec.git docs/references/OpenSpec
