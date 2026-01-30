@@ -1,0 +1,192 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/concept-mapping.schema.yaml
+schema_version: "1.0"
+metadata:
+  framework: spec-kit
+  last_updated: "2026-01-30"
+
+relationships:
+  # Workflow sequence
+  - source: constitution
+    target: feature-specification
+    type: enables
+    notes: Constitution must exist before specs can be created
+
+  - source: feature-specification
+    target: clarify
+    type: enables
+    notes: Clarify workflow requires existing spec
+
+  - source: clarify
+    target: feature-specification
+    type: produces
+    notes: Clarify updates the spec with resolved ambiguities
+
+  - source: feature-specification
+    target: implementation-plan
+    type: precedes
+    notes: Spec must be complete before planning
+
+  - source: implementation-plan
+    target: data-model
+    type: produces
+    notes: Plan creates data model as supporting artifact
+
+  - source: implementation-plan
+    target: contracts
+    type: produces
+    notes: Plan creates API contracts
+
+  - source: implementation-plan
+    target: quickstart
+    type: produces
+    notes: Plan creates validation scenarios
+
+  - source: implementation-plan
+    target: tasks
+    type: precedes
+    notes: Tasks derived from plan
+
+  - source: analyze
+    target: feature-specification
+    type: validates
+    notes: Analyze checks spec consistency
+
+  - source: analyze
+    target: implementation-plan
+    type: validates
+    notes: Analyze checks plan consistency
+
+  # Concept relationships
+  - source: constitution
+    target: pre-implementation-gates
+    type: contains
+    notes: Gates are defined in constitution
+
+  - source: constitutional-articles
+    target: constitution
+    type: contains
+    notes: Articles are part of constitution
+
+  - source: needs-clarification-marker
+    target: clarify
+    type: requires
+    notes: Markers trigger clarification workflow
+
+cross_framework_mappings:
+  - local_term: constitution
+    mappings:
+      - framework: bmad
+        term: product-brief
+        match_level: low
+        notes: Different purpose - BMAD brief is project description, not governance
+      - framework: openspec
+        term: config
+        match_level: partial
+        notes: Both set project-level constraints, but constitution is more formal
+      - framework: common-sdd
+        term: governance-document
+        match_level: exact
+        notes: Standard governance concept
+
+  - local_term: feature-specification
+    mappings:
+      - framework: bmad
+        term: prd
+        match_level: partial
+        notes: BMAD PRD is broader in scope
+      - framework: openspec
+        term: proposal
+        match_level: partial
+        notes: OpenSpec proposal combined with specs
+      - framework: common-sdd
+        term: requirements-spec
+        match_level: exact
+        notes: Standard requirements document
+
+  - local_term: implementation-plan
+    mappings:
+      - framework: bmad
+        term: architecture
+        match_level: partial
+        notes: Different focus - spec-kit is feature-level, BMAD is project-level
+      - framework: openspec
+        term: design
+        match_level: exact
+        notes: Same purpose and scope
+      - framework: common-sdd
+        term: design-document
+        match_level: exact
+        notes: Standard design document
+
+  - local_term: tasks
+    mappings:
+      - framework: bmad
+        term: story
+        match_level: exact
+        notes: Same concept - implementation unit
+      - framework: openspec
+        term: tasks
+        match_level: exact
+        notes: Identical concept
+      - framework: common-sdd
+        term: work-items
+        match_level: exact
+        notes: Standard work breakdown
+
+  - local_term: clarify
+    mappings:
+      - framework: bmad
+        term: null
+        match_level: none
+        notes: No explicit clarification workflow in BMAD
+      - framework: openspec
+        term: null
+        match_level: none
+        notes: No explicit clarification workflow in OpenSpec
+
+  - local_term: analyze
+    mappings:
+      - framework: bmad
+        term: readiness-check
+        match_level: exact
+        notes: Both are validation gates
+      - framework: openspec
+        term: verify
+        match_level: partial
+        notes: Different timing - OpenSpec verify is post-implementation
+
+unique_concepts:
+  - id: constitution
+    name: Constitution
+    description: Immutable architectural DNA with 9 formal articles governing all development
+    why_unique: No other framework has such formal, article-based governance
+
+  - id: constitutional-articles
+    name: 9 Constitutional Articles
+    description: Specific development principles (Library-First, CLI Mandate, Test-First, etc.)
+    why_unique: Prescriptive constraints not found in other frameworks
+
+  - id: test-first-imperative
+    name: Test-First Imperative
+    description: Non-negotiable TDD requirement (Article III)
+    why_unique: Strict enforcement not optional - other frameworks recommend but don't mandate
+
+  - id: library-first-principle
+    name: Library-First Principle
+    description: Features must begin as standalone libraries (Article I)
+    why_unique: Specific architectural pattern not mandated by other frameworks
+
+  - id: cli-interface-mandate
+    name: CLI Interface Mandate
+    description: Text I/O requirement for all features (Article II)
+    why_unique: Interface constraint not found in other frameworks
+
+  - id: clarify-workflow
+    name: Clarify Workflow
+    description: Structured ambiguity detection and resolution step
+    why_unique: Dedicated clarification step not found in other frameworks
+
+  - id: needs-clarification-marker
+    name: NEEDS CLARIFICATION Marker
+    description: Formal tag with max 3 per spec to prevent assumption-making
+    why_unique: Quantified ambiguity tracking not found elsewhere

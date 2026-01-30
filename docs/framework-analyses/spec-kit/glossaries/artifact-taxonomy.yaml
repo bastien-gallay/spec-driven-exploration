@@ -1,0 +1,191 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/artifact-taxonomy.schema.yaml
+schema_version: "1.0"
+metadata:
+  framework: spec-kit
+  last_updated: "2026-01-30"
+
+artifacts:
+  # Governance Artifacts
+  - id: constitution
+    name: Constitution
+    file_pattern: ".specify/memory/constitution.md"
+    description: Project principles and constraints defining architectural DNA
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: /speckit.constitution
+      format: markdown
+    sections:
+      - name: Articles
+        required: true
+        purpose: Define core principles (9 articles)
+    dependencies:
+      requires: []
+      produces:
+        - feature-specification
+
+  # Specification Artifacts
+  - id: feature-specification
+    name: Feature Specification
+    file_pattern: "specs/{feature}/spec.md"
+    description: Technology-agnostic description of WHAT and WHY
+    classifications:
+      purpose: specification
+      lifecycle: once_per_feature
+      creator: /speckit.specify
+      format: markdown
+    sections:
+      - name: User Scenarios
+        required: true
+        purpose: Prioritized user stories with acceptance criteria
+      - name: Functional Requirements
+        required: true
+        purpose: Testable, numbered requirements
+      - name: Key Entities
+        required: true
+        purpose: Data model overview
+      - name: Success Criteria
+        required: true
+        purpose: Measurable outcomes
+      - name: Edge Cases
+        required: true
+        purpose: Boundary conditions
+    dependencies:
+      requires:
+        - constitution
+      produces:
+        - implementation-plan
+        - research
+
+  - id: research
+    name: Research
+    file_pattern: "specs/{feature}/research.md"
+    description: Investigation of technology choices and unknowns
+    classifications:
+      purpose: specification
+      lifecycle: per_session
+      creator: /speckit.plan
+      format: markdown
+    dependencies:
+      requires:
+        - feature-specification
+      produces:
+        - implementation-plan
+
+  # Design Artifacts
+  - id: implementation-plan
+    name: Implementation Plan
+    file_pattern: "specs/{feature}/plan.md"
+    description: Technical architecture defining HOW
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: /speckit.plan
+      format: markdown
+    sections:
+      - name: Technical Context
+        required: true
+        purpose: Language, dependencies, storage
+      - name: Constitution Check
+        required: true
+        purpose: Gate validation
+      - name: Project Structure
+        required: true
+        purpose: Architecture pattern
+      - name: Complexity Tracking
+        required: false
+        purpose: Justified principle violations
+    dependencies:
+      requires:
+        - feature-specification
+      produces:
+        - data-model
+        - contracts
+        - quickstart
+        - tasks
+
+  - id: data-model
+    name: Data Model
+    file_pattern: "specs/{feature}/data-model.md"
+    description: Entity schemas and relationships
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: /speckit.plan
+      format: markdown
+    dependencies:
+      requires:
+        - implementation-plan
+      produces: []
+
+  - id: contracts
+    name: Contracts
+    file_pattern: "specs/{feature}/contracts/*.yaml"
+    description: API specifications (OpenAPI/GraphQL)
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: /speckit.plan
+      format: yaml
+    dependencies:
+      requires:
+        - implementation-plan
+      produces: []
+
+  - id: quickstart
+    name: Quickstart
+    file_pattern: "specs/{feature}/quickstart.md"
+    description: Key validation scenarios
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: /speckit.plan
+      format: markdown
+    dependencies:
+      requires:
+        - implementation-plan
+      produces: []
+
+  # Execution Artifacts
+  - id: tasks
+    name: Tasks
+    file_pattern: "specs/{feature}/tasks.md"
+    description: Implementation checklist with phases
+    classifications:
+      purpose: execution
+      lifecycle: once_per_feature
+      creator: /speckit.tasks
+      format: markdown
+    sections:
+      - name: Phase 1 Setup
+        required: true
+        purpose: Project initialization
+      - name: Phase 2 Foundational
+        required: true
+        purpose: Blocking prerequisites
+      - name: Phase 3+ User Stories
+        required: true
+        purpose: Feature implementation
+      - name: Final Phase Polish
+        required: true
+        purpose: Cross-cutting concerns
+    dependencies:
+      requires:
+        - implementation-plan
+      produces: []
+
+  # Validation Artifacts
+  - id: analysis-report
+    name: Analysis Report
+    file_pattern: null
+    description: Cross-artifact consistency validation (not persisted)
+    classifications:
+      purpose: validation
+      lifecycle: per_session
+      creator: /speckit.analyze
+      format: markdown
+    dependencies:
+      requires:
+        - feature-specification
+        - implementation-plan
+      produces: []

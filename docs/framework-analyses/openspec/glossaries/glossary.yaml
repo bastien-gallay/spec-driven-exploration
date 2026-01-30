@@ -1,0 +1,388 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/glossary.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: openspec
+  last_updated: "2026-01-30"
+  source_commit: "3768694"
+
+terms:
+  # Core Concepts
+  - id: artifact
+    term: Artifact
+    category: core_concept
+    definition: >-
+      A document produced during the specification process. OpenSpec defines four
+      core artifacts: Proposal, Specs, Design, and Tasks.
+    related_terms:
+      - artifact-graph
+      - proposal
+      - specs
+      - design
+      - tasks
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: artifact-graph
+    term: Artifact Graph
+    category: core_concept
+    definition: >-
+      DAG-based system managing artifact creation order and dependencies. Uses
+      topological sorting (Kahn's algorithm) for deterministic ordering.
+    related_terms:
+      - artifact
+      - topological-sort
+    source_refs:
+      - docs/references/OpenSpec/src/core/artifact-graph/graph.ts
+
+  - id: delta-spec
+    term: Delta Spec
+    category: core_concept
+    definition: >-
+      Specification format focusing only on changes rather than full document
+      rewrites. Uses ADDED, MODIFIED, and REMOVED sections for brownfield support.
+    related_terms:
+      - specs
+      - sync
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: opsx
+    term: OPSX
+    category: core_concept
+    definition: >-
+      OpenSpec's workflow architecture with action-based commands rather than
+      phase-based progression. Provides commands that can be used when dependencies
+      are satisfied.
+    related_terms:
+      - opsx-explore
+      - opsx-new
+      - opsx-continue
+      - opsx-apply
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: schema
+    term: Schema
+    category: core_concept
+    definition: >-
+      YAML definition of a workflow, specifying artifacts, their dependencies,
+      templates, and instructions. Supports multi-level resolution from package
+      to project level.
+    related_terms:
+      - multi-level-resolution
+      - artifact
+    source_refs:
+      - docs/references/OpenSpec/schemas/spec-driven/schema.yaml
+
+  # Workflow Terms
+  - id: change
+    term: Change
+    category: workflow_term
+    definition: >-
+      A proposed modification to the system, isolated in its own folder under
+      openspec/changes/. Contains all artifacts for that change enabling parallel
+      work without conflicts.
+    related_terms:
+      - archive
+      - opsx-new
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: archive
+    term: Archive
+    category: workflow_term
+    definition: >-
+      Completed changes moved to openspec/changes/archive/ with timestamp prefix.
+      Preserves full context including all artifacts for historical record.
+    related_terms:
+      - change
+      - opsx-archive
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: fast-forward
+    term: Fast-Forward (ff)
+    category: workflow_term
+    definition: >-
+      OPSX command (/opsx:ff) creating all planning artifacts at once instead
+      of step-by-step progression. Used for clear requirements and experienced teams.
+    aliases:
+      - ff
+    related_terms:
+      - opsx-continue
+      - artifact
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: verify
+    term: Verify
+    category: workflow_term
+    definition: >-
+      OPSX command (/opsx:verify) validating implementation against artifacts
+      across three dimensions: completeness, correctness, and coherence.
+    related_terms:
+      - completeness
+      - correctness
+      - coherence
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: sync
+    term: Sync
+    category: workflow_term
+    definition: >-
+      OPSX command (/opsx:sync) merging delta specs into main specs before
+      archiving. Applies ADDED, MODIFIED, and REMOVED sections.
+    related_terms:
+      - delta-spec
+      - archive
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  # Artifact Terms
+  - id: proposal
+    term: Proposal
+    category: artifact_term
+    definition: >-
+      Document capturing intent, scope, and approach (proposal.md). Contains WHY,
+      scope boundaries, and high-level strategy for a change.
+    related_terms:
+      - artifact
+      - specs
+    source_refs:
+      - docs/references/OpenSpec/schemas/spec-driven/templates/proposal.md
+
+  - id: specs
+    term: Specs (Specifications)
+    category: artifact_term
+    definition: >-
+      Requirements and scenarios defining WHAT the system should do. Stored in
+      specs/[domain]/spec.md using RFC 2119 keywords (MUST, SHALL, SHOULD, MAY).
+    aliases:
+      - Specifications
+    related_terms:
+      - delta-spec
+      - rfc-2119
+      - domain
+    source_refs:
+      - docs/references/OpenSpec/schemas/spec-driven/templates/spec.md
+
+  - id: design
+    term: Design
+    category: artifact_term
+    definition: >-
+      Technical approach document (design.md) explaining HOW to implement the
+      change. Contains decisions, rationale, and trade-offs.
+    related_terms:
+      - artifact
+      - tasks
+    source_refs:
+      - docs/references/OpenSpec/schemas/spec-driven/templates/design.md
+
+  - id: tasks
+    term: Tasks
+    category: artifact_term
+    definition: >-
+      Implementation checklist (tasks.md) with checkbox format for tracking
+      progress. Small, completable steps ordered by dependency.
+    related_terms:
+      - artifact
+      - opsx-apply
+    source_refs:
+      - docs/references/OpenSpec/schemas/spec-driven/templates/tasks.md
+
+  # Technical Terms
+  - id: rfc-2119
+    term: RFC 2119 Keywords
+    category: technical_term
+    definition: >-
+      Standard requirement level indicators used in specifications: MUST/SHALL
+      (absolute requirement), SHOULD (recommended), MAY (optional feature).
+    related_terms:
+      - specs
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: topological-sort
+    term: Topological Sort
+    category: technical_term
+    definition: >-
+      Algorithm (Kahn's) used by artifact graph to determine correct build order
+      based on dependencies. Enables deterministic artifact creation.
+    related_terms:
+      - artifact-graph
+    source_refs:
+      - docs/references/OpenSpec/src/core/artifact-graph/graph.ts
+
+  - id: multi-level-resolution
+    term: Multi-Level Resolution
+    category: technical_term
+    definition: >-
+      Schema resolution order: Package built-in, User global, Project local.
+      Enables customization without modifying package code.
+    related_terms:
+      - schema
+    source_refs:
+      - docs/references/OpenSpec/src/core/artifact-graph/resolver.ts
+
+  - id: context-injection
+    term: Context Injection
+    category: technical_term
+    definition: >-
+      Project configuration embedded as <context> tags in artifact instructions.
+      Includes tech stack, conventions, and style guidelines.
+    related_terms:
+      - config
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  # Directory Terms
+  - id: specs-directory
+    term: openspec/specs/
+    category: directory_term
+    definition: >-
+      Source of truth describing current system behavior. Organized by domain
+      (logical groupings like auth/, payments/, notifications/).
+    related_terms:
+      - domain
+      - specs
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: changes-directory
+    term: openspec/changes/
+    category: directory_term
+    definition: >-
+      Work in progress area. Each change in separate folder with its artifacts.
+      Enables parallel work without conflicts.
+    related_terms:
+      - change
+      - archive
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: config
+    term: openspec/config.yaml
+    category: directory_term
+    definition: >-
+      Project configuration defining schema, context, and per-artifact rules.
+      Supports tech stack, API conventions, and artifact-specific constraints.
+    related_terms:
+      - context-injection
+      - schema
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  - id: domain
+    term: Domain
+    category: directory_term
+    definition: >-
+      Logical grouping of related specifications (e.g., auth/, payments/,
+      notifications/). Organizes specs by functional area.
+    related_terms:
+      - specs-directory
+      - specs
+    source_refs:
+      - docs/references/OpenSpec/docs/concepts.md
+
+  # OPSX Commands (Role Terms)
+  - id: opsx-explore
+    term: /opsx:explore
+    category: role_term
+    definition: >-
+      Think through ideas and investigate problems without artifact pressure.
+      Legitimizes exploration as valid work.
+    related_terms:
+      - opsx
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: opsx-new
+    term: /opsx:new
+    category: role_term
+    definition: >-
+      Start a new change folder. Creates changes/[change-name]/ with .openspec.yaml
+      metadata file.
+    related_terms:
+      - opsx
+      - change
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: opsx-continue
+    term: /opsx:continue
+    category: role_term
+    definition: >-
+      Create next artifact step-by-step. Checks completed artifacts, identifies
+      unblocked artifacts, and creates next in dependency order.
+    related_terms:
+      - opsx
+      - artifact-graph
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: opsx-apply
+    term: /opsx:apply
+    category: role_term
+    definition: >-
+      Implement tasks, checking off as complete. Loads tasks.md, finds next
+      uncompleted task, implements it, and marks complete.
+    related_terms:
+      - opsx
+      - tasks
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: opsx-archive
+    term: /opsx:archive
+    category: role_term
+    definition: >-
+      Complete change and move to archive. Verifies completion, prompts for spec
+      sync if needed, moves to archive/[date]-[change-name]/.
+    related_terms:
+      - opsx
+      - archive
+      - sync
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  # Quality Terms
+  - id: completeness
+    term: Completeness
+    category: quality_term
+    definition: >-
+      Verification dimension checking: All tasks done? All requirements implemented?
+      Part of three-dimensional verification.
+    related_terms:
+      - verify
+      - correctness
+      - coherence
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: correctness
+    term: Correctness
+    category: quality_term
+    definition: >-
+      Verification dimension checking: Does implementation match spec intent?
+      Part of three-dimensional verification.
+    related_terms:
+      - verify
+      - completeness
+      - coherence
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md
+
+  - id: coherence
+    term: Coherence
+    category: quality_term
+    definition: >-
+      Verification dimension checking: Are design decisions reflected in code?
+      Part of three-dimensional verification.
+    related_terms:
+      - verify
+      - completeness
+      - correctness
+    source_refs:
+      - docs/references/OpenSpec/docs/opsx.md

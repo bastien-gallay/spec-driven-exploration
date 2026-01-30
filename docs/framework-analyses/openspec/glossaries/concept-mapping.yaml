@@ -1,0 +1,348 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/concept-mapping.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: openspec
+  last_updated: "2026-01-30"
+
+relationships:
+  # Artifact dependency flow
+  - source: proposal
+    target: delta-spec
+    type: precedes
+    notes: Proposal establishes scope before specifications
+
+  - source: proposal
+    target: design
+    type: precedes
+    notes: Proposal establishes scope before technical design
+
+  - source: delta-spec
+    target: tasks
+    type: precedes
+    notes: Specifications inform implementation tasks
+
+  - source: design
+    target: tasks
+    type: precedes
+    notes: Design decisions inform implementation tasks
+
+  - source: tasks
+    target: implementation
+    type: produces
+    notes: Tasks guide code implementation via /opsx:apply
+
+  # OPSX command relationships
+  - source: opsx-new
+    target: change
+    type: produces
+    notes: Creates new change folder
+
+  - source: opsx-continue
+    target: artifact
+    type: produces
+    notes: Creates next artifact in dependency order
+
+  - source: opsx-apply
+    target: implementation
+    type: produces
+    notes: Implements tasks and marks complete
+
+  - source: opsx-verify
+    target: tasks
+    type: validates
+    notes: Validates implementation against artifacts
+
+  - source: opsx-sync
+    target: domain-spec
+    type: produces
+    notes: Merges delta specs into main specs
+
+  - source: opsx-archive
+    target: archived-change
+    type: produces
+    notes: Moves completed change to archive
+
+  # Artifact graph relationships
+  - source: artifact-graph
+    target: artifact
+    type: contains
+    notes: Graph manages all artifact dependencies
+
+  - source: artifact-graph
+    target: topological-sort
+    type: requires
+    notes: Uses Kahn's algorithm for build order
+
+  # Configuration relationships
+  - source: project-config
+    target: context-injection
+    type: enables
+    notes: Config context embedded in instructions
+
+  - source: schema
+    target: artifact
+    type: contains
+    notes: Schema defines artifact structure and dependencies
+
+  - source: multi-level-resolution
+    target: schema
+    type: enables
+    notes: Allows schema customization at multiple levels
+
+  # Delta spec merge process
+  - source: delta-spec
+    target: domain-spec
+    type: produces
+    notes: Delta specs merged via /opsx:sync
+
+  - source: sync
+    target: archive
+    type: precedes
+    notes: Sync typically happens before archive
+
+  # Verification relationships
+  - source: verify
+    target: completeness
+    type: contains
+    notes: Verification includes completeness check
+
+  - source: verify
+    target: correctness
+    type: contains
+    notes: Verification includes correctness check
+
+  - source: verify
+    target: coherence
+    type: contains
+    notes: Verification includes coherence check
+
+cross_framework_mappings:
+  - local_term: proposal
+    mappings:
+      - framework: bmad
+        term: product-brief
+        match_level: partial
+        notes: Proposal is per-change, product-brief is per-project
+      - framework: spec-kit
+        term: feature-specification
+        match_level: partial
+        notes: Proposal is lighter, focuses on WHY and scope
+      - framework: common-sdd
+        term: project-brief
+        match_level: partial
+        notes: Similar intent document
+
+  - local_term: delta-spec
+    mappings:
+      - framework: bmad
+        term: prd
+        match_level: partial
+        notes: PRD is full document, delta-spec focuses on changes
+      - framework: spec-kit
+        term: feature-specification
+        match_level: partial
+        notes: Delta-spec uses ADDED/MODIFIED/REMOVED format
+      - framework: common-sdd
+        term: specification
+        match_level: partial
+        notes: Delta-spec is change-focused
+
+  - local_term: design
+    mappings:
+      - framework: bmad
+        term: architecture
+        match_level: exact
+        notes: Both capture technical decisions and rationale
+      - framework: spec-kit
+        term: implementation-plan
+        match_level: exact
+        notes: Both describe HOW to implement
+      - framework: common-sdd
+        term: design-document
+        match_level: exact
+        notes: Technical approach artifact
+
+  - local_term: tasks
+    mappings:
+      - framework: bmad
+        term: story
+        match_level: exact
+        notes: Both represent implementable units
+      - framework: spec-kit
+        term: tasks
+        match_level: exact
+        notes: Same concept - implementation checklist
+      - framework: common-sdd
+        term: work-item
+        match_level: exact
+        notes: Implementable unit of work
+
+  - local_term: change
+    mappings:
+      - framework: bmad
+        term: epic
+        match_level: partial
+        notes: Change is isolated folder, epic is grouping
+      - framework: spec-kit
+        term: feature
+        match_level: exact
+        notes: Both represent isolated work packages
+      - framework: common-sdd
+        term: feature-package
+        match_level: exact
+        notes: Isolated unit of work
+
+  - local_term: archive
+    mappings:
+      - framework: bmad
+        term: N/A
+        match_level: none
+        notes: BMAD doesn't have explicit archive concept
+      - framework: spec-kit
+        term: completed
+        match_level: partial
+        notes: Archive preserves full context, completion is status
+      - framework: common-sdd
+        term: closed
+        match_level: partial
+        notes: Archive is physical, closed is status
+
+  - local_term: opsx-apply
+    mappings:
+      - framework: bmad
+        term: story-implementation
+        match_level: exact
+        notes: Both implement tasks from specification
+      - framework: spec-kit
+        term: speckit-implement
+        match_level: exact
+        notes: Same purpose - execute implementation
+      - framework: common-sdd
+        term: implement
+        match_level: exact
+        notes: Implementation action
+
+  - local_term: opsx-verify
+    mappings:
+      - framework: bmad
+        term: readiness-check
+        match_level: partial
+        notes: Verify is post-implementation, readiness is pre-implementation
+      - framework: spec-kit
+        term: speckit-analyze
+        match_level: partial
+        notes: Different timing - verify is validation, analyze is assessment
+      - framework: common-sdd
+        term: validate
+        match_level: exact
+        notes: Validation action
+
+  - local_term: domain
+    mappings:
+      - framework: bmad
+        term: epic
+        match_level: low
+        notes: Domain is structural organization, epic is work grouping
+      - framework: spec-kit
+        term: feature
+        match_level: low
+        notes: Domain is organization, feature is specification unit
+      - framework: common-sdd
+        term: module
+        match_level: partial
+        notes: Logical grouping concept
+
+  - local_term: schema
+    mappings:
+      - framework: bmad
+        term: workflow
+        match_level: partial
+        notes: Schema defines structure, workflow defines process
+      - framework: spec-kit
+        term: command
+        match_level: low
+        notes: Different abstraction levels
+      - framework: common-sdd
+        term: workflow-definition
+        match_level: exact
+        notes: Process template definition
+
+  - local_term: config
+    mappings:
+      - framework: bmad
+        term: project-context
+        match_level: partial
+        notes: Both provide project-level context
+      - framework: spec-kit
+        term: constitution
+        match_level: partial
+        notes: Constitution is governance, config is settings
+      - framework: common-sdd
+        term: project-settings
+        match_level: exact
+        notes: Project configuration
+
+unique_concepts:
+  - id: delta-spec
+    name: Delta Specs
+    description: >-
+      Specification format using ADDED, MODIFIED, and REMOVED sections to focus
+      only on what's changing, not full document rewrites.
+    why_unique: >-
+      OpenSpec's brownfield-first approach. Other frameworks require full
+      specifications; OpenSpec enables change-focused documentation.
+
+  - id: artifact-graph
+    name: Artifact Graph
+    description: >-
+      DAG-based system using topological sort (Kahn's algorithm) for managing
+      artifact dependencies and determining creation order.
+    why_unique: >-
+      Algorithmic approach to artifact management. Other frameworks use
+      sequential phases or manual dependency tracking.
+
+  - id: fluid-workflow
+    name: Fluid Workflow
+    description: >-
+      Action-based OPSX commands available anytime based on dependency state,
+      rather than phase gates requiring linear progression.
+    why_unique: >-
+      Non-linear workflow model. BMAD uses phases, spec-kit uses sequential
+      commands. OpenSpec allows work on any satisfied dependency.
+
+  - id: multi-level-resolution
+    name: Multi-Level Resolution
+    description: >-
+      Schema resolution from Package (built-in) to User (global) to Project
+      (local), enabling customization without modifying package code.
+    why_unique: >-
+      Flexible override system for workflow customization. Other frameworks
+      have single-level or simpler configuration models.
+
+  - id: fast-forward
+    name: Fast-Forward Mode
+    description: >-
+      /opsx:ff command creating all planning artifacts at once instead of
+      step-by-step progression, for clear requirements and experienced teams.
+    why_unique: >-
+      Speed optimization for simple changes. Other frameworks require
+      sequential artifact creation.
+
+  - id: change-isolation
+    name: Change Isolation
+    description: >-
+      Each change in separate folder (openspec/changes/{name}/) enabling
+      parallel work without conflicts and clean context switching.
+    why_unique: >-
+      Explicit folder-based isolation for parallel work. While spec-kit has
+      feature folders, OpenSpec's model with archive and sync is distinctive.
+
+  - id: three-dimensional-verification
+    name: Three-Dimensional Verification
+    description: >-
+      /opsx:verify checks completeness (all done?), correctness (matches intent?),
+      and coherence (design reflected?) as explicit dimensions.
+    why_unique: >-
+      Structured multi-dimensional validation. Other frameworks have review
+      processes but not this explicit three-dimension model.

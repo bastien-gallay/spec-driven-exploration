@@ -1,0 +1,380 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/glossary.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: bmad
+  last_updated: "2026-01-30"
+  source_commit: "5fe54de"
+
+terms:
+  # Core Concepts
+  - id: agent
+    term: Agent
+    category: core_concept
+    definition: >-
+      A specialized AI persona with defined role, identity, communication style,
+      and workflows. BMAD includes 21 agents such as PM, Architect, Developer,
+      UX Designer, and Scrum Master.
+    related_terms:
+      - bmad-master
+      - party-mode
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/README.md
+
+  - id: bmad-master
+    term: BMad Master
+    category: core_concept
+    definition: >-
+      The core orchestrator agent responsible for managing Party Mode, providing
+      /bmad-help guidance, and coordinating multi-agent interactions.
+    related_terms:
+      - agent
+      - party-mode
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/core/agents/bmad-master.agent.yaml
+
+  - id: bmad-method
+    term: BMad Method (BMM)
+    category: core_concept
+    definition: >-
+      The core BMAD module containing 34+ workflows across the four development
+      phases. The primary framework for AI-assisted software development.
+    aliases:
+      - BMM
+    related_terms:
+      - phase
+      - workflow
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/README.md
+
+  - id: party-mode
+    term: Party Mode
+    category: core_concept
+    definition: >-
+      Multi-agent collaboration mode where multiple specialized agents participate
+      in a single conversation, orchestrated by BMad Master. Used for big decisions,
+      brainstorming, and retrospectives.
+    related_terms:
+      - bmad-master
+      - agent
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/explanation/party-mode.md
+
+  # Workflow Terms
+  - id: phase
+    term: Phase
+    category: workflow_term
+    definition: >-
+      One of four sequential stages in the BMAD development lifecycle: Analysis
+      (optional), Planning, Solutioning, and Implementation.
+    related_terms:
+      - workflow
+      - bmad-method
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  - id: quick-flow
+    term: Quick Flow
+    category: workflow_term
+    definition: >-
+      Minimum ceremony track for simple changes (bug fixes, small features). Uses
+      quick-spec and quick-dev workflows, bypassing full planning.
+    related_terms:
+      - workflow
+      - tech-spec
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/explanation/quick-flow.md
+
+  - id: step-file-architecture
+    term: Step-File Architecture
+    category: workflow_term
+    definition: >-
+      Workflow design pattern where each step is a self-contained micro-file.
+      Steps are loaded just-in-time, executed sequentially, and never pre-loaded.
+    related_terms:
+      - workflow
+      - frontmatter
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/tutorials/getting-started.md
+
+  - id: tri-modal-workflow
+    term: Tri-Modal Workflow
+    category: workflow_term
+    definition: >-
+      Workflow supporting three operation modes: Create, Validate, and Edit.
+      Used for key workflows like PRD creation.
+    related_terms:
+      - workflow
+      - prd
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/workflows/2-plan-workflows/create-prd/
+
+  - id: workflow
+    term: Workflow
+    category: workflow_term
+    definition: >-
+      A guided sequence of steps executed by a specific agent to produce an
+      artifact. BMAD includes 50+ workflows organized by phase.
+    related_terms:
+      - phase
+      - step-file-architecture
+      - agent
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  # Artifact Terms
+  - id: adr
+    term: ADR (Architecture Decision Record)
+    category: artifact_term
+    definition: >-
+      Document capturing a technical decision, its context, considered alternatives,
+      and rationale. Created during the Solutioning phase.
+    aliases:
+      - Architecture Decision Record
+    related_terms:
+      - architecture
+      - solutioning
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/explanation/why-solutioning-matters.md
+
+  - id: architecture
+    term: Architecture
+    category: artifact_term
+    definition: >-
+      Technical design document (architecture.md) containing system design,
+      component interactions, integration patterns, and ADRs.
+    related_terms:
+      - adr
+      - solutioning
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/workflows/3-solution-workflows/create-architecture/
+
+  - id: epic
+    term: Epic
+    category: artifact_term
+    definition: >-
+      High-level feature grouping containing related user stories. Created from
+      PRD requirements during the Solutioning phase.
+    related_terms:
+      - story
+      - prd
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  - id: prd
+    term: PRD (Product Requirements Document)
+    category: artifact_term
+    definition: >-
+      Comprehensive document defining functional and non-functional requirements,
+      personas, metrics, and risks. Primary output of the Planning phase.
+    aliases:
+      - Product Requirements Document
+    related_terms:
+      - epic
+      - story
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/workflows/2-plan-workflows/create-prd/
+
+  - id: product-brief
+    term: Product Brief
+    category: artifact_term
+    definition: >-
+      Strategic vision document created during the Analysis phase, defining
+      product strategy and high-level goals.
+    related_terms:
+      - prd
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  - id: project-context
+    term: Project Context
+    category: artifact_term
+    definition: >-
+      Document (project-context.md) describing existing codebase rules and patterns.
+      Required for brownfield development.
+    related_terms:
+      - brownfield
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/how-to/brownfield/index.md
+
+  - id: sprint-status
+    term: Sprint Status
+    category: artifact_term
+    definition: >-
+      YAML file (sprint-status.yaml) tracking epics and stories across sprints.
+      Initialized during Sprint Planning.
+    related_terms:
+      - epic
+      - story
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  - id: story
+    term: Story
+    category: artifact_term
+    definition: >-
+      Individual implementable unit of work with tasks, subtasks, and acceptance
+      criteria. Format: story-[slug].md.
+    related_terms:
+      - epic
+      - sprint-status
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/workflows/4-impl-workflows/create-story/
+
+  - id: tech-spec
+    term: Tech Spec
+    category: artifact_term
+    definition: >-
+      Focused technical specification created during Quick Flow for simple changes.
+      Replaces full PRD/Architecture for minimum ceremony.
+    related_terms:
+      - quick-flow
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/workflows/quick-flow/quick-spec/
+
+  # Technical Terms
+  - id: adversarial-review
+    term: Adversarial Review
+    category: technical_term
+    definition: >-
+      Review technique where the reviewer MUST find issues. Prevents confirmation
+      bias by assuming problems exist and forcing genuine analysis.
+    related_terms:
+      - code-review
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/explanation/adversarial-review.md
+
+  - id: brownfield
+    term: Brownfield
+    category: technical_term
+    definition: >-
+      Development approach for existing codebases, requiring project-context.md
+      to capture existing patterns and constraints.
+    related_terms:
+      - project-context
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/how-to/brownfield/index.md
+
+  - id: context-loading
+    term: Context Loading
+    category: technical_term
+    definition: >-
+      Process of loading relevant documents before workflow execution. Different
+      workflows load different context (PRD, architecture, stories, etc.).
+    related_terms:
+      - workflow
+      - progressive-context
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/tutorials/getting-started.md
+
+  - id: frontmatter
+    term: Frontmatter
+    category: technical_term
+    definition: >-
+      YAML metadata at the start of documents tracking workflow progress
+      (stepsCompleted), input documents, and workflow type.
+    related_terms:
+      - step-file-architecture
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/tutorials/getting-started.md
+
+  - id: progressive-context
+    term: Progressive Context Building
+    category: technical_term
+    definition: >-
+      Pattern where each development phase produces documents that become context
+      for subsequent phases, enabling increasingly focused AI assistance.
+    related_terms:
+      - phase
+      - context-loading
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/README.md
+
+  - id: solutioning
+    term: Solutioning
+    category: technical_term
+    definition: >-
+      Phase 3 of BMAD focused on preventing agent conflicts through Architecture
+      Decision Records before implementation begins.
+    related_terms:
+      - adr
+      - architecture
+      - phase
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/explanation/why-solutioning-matters.md
+
+  # Role Terms
+  - id: agent-john
+    term: John (PM)
+    category: role_term
+    definition: Product Manager agent responsible for PRD creation and requirements.
+    related_terms:
+      - agent
+      - prd
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/agents/pm.agent.yaml
+
+  - id: agent-winston
+    term: Winston (Architect)
+    category: role_term
+    definition: Architect agent responsible for system design and ADRs.
+    related_terms:
+      - agent
+      - architecture
+      - adr
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/agents/architect.agent.yaml
+
+  - id: agent-amelia
+    term: Amelia (Developer)
+    category: role_term
+    definition: Developer agent responsible for story implementation.
+    related_terms:
+      - agent
+      - story
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/agents/dev.agent.yaml
+
+  - id: agent-bob
+    term: Bob (Scrum Master)
+    category: role_term
+    definition: Scrum Master agent responsible for sprint management.
+    related_terms:
+      - agent
+      - sprint-status
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/agents/sm.agent.yaml
+
+  - id: agent-barry
+    term: Barry (Quick Flow Dev)
+    category: role_term
+    definition: Quick Flow specialist agent for minimum ceremony development.
+    related_terms:
+      - agent
+      - quick-flow
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/src/bmm/agents/quick-flow-solo-dev.agent.yaml
+
+  # Quality Terms
+  - id: implementation-readiness
+    term: Implementation Readiness
+    category: quality_term
+    definition: >-
+      Gate check before Phase 4 with three outcomes: PASS (ready), CONCERNS
+      (issues to address), or FAIL (significant problems).
+    related_terms:
+      - phase
+      - solutioning
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md
+
+  - id: code-review
+    term: Code Review
+    category: quality_term
+    definition: >-
+      Multi-dimensional validation workflow checking functional correctness,
+      code quality, test coverage, architecture alignment, and performance.
+    related_terms:
+      - adversarial-review
+    source_refs:
+      - docs/references/BMAD/BMAD-METHOD/docs/reference/workflow-map.md

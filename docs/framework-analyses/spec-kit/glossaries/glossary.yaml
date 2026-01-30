@@ -1,0 +1,306 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/glossary.schema.yaml
+schema_version: "1.0"
+metadata:
+  framework: spec-kit
+  last_updated: "2026-01-30"
+  source_commit: null
+
+terms:
+  # Core Concepts
+  - id: constitution
+    term: Constitution
+    category: core_concept
+    definition: |
+      Project's governing principles and development guidelines stored in
+      `.specify/memory/constitution.md`. Contains 9 articles defining architectural
+      DNA: Library-First, CLI Mandate, Test-First Imperative, etc.
+    aliases: []
+    related_terms:
+      - constitutional-articles
+    source_refs:
+      - docs/references/spec-kit/memory/constitution.md
+
+  - id: specification-driven-development
+    term: Specification-Driven Development (SDD)
+    category: core_concept
+    definition: |
+      Development approach where specifications drive code generation, treating specs
+      as the primary executable artifact rather than code.
+    aliases:
+      - SDD
+    related_terms:
+      - feature-specification
+      - intent-driven-development
+    source_refs:
+      - docs/references/spec-kit/spec-driven.md
+
+  - id: feature
+    term: Feature
+    category: core_concept
+    definition: |
+      A discrete unit of functionality with its own specification, plan, and tasks.
+      Organized in `specs/[###-feature-name]/` directories.
+    aliases: []
+    related_terms:
+      - feature-specification
+      - implementation-plan
+      - tasks
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: intent-driven-development
+    term: Intent-Driven Development
+    category: core_concept
+    definition: |
+      Natural language specifications define behavior before implementation.
+      Focus on WHAT and WHY, never HOW.
+    aliases: []
+    related_terms:
+      - specification-driven-development
+      - feature-specification
+    source_refs:
+      - docs/references/spec-kit/spec-driven.md
+
+  # Workflow Terms
+  - id: command
+    term: Command
+    category: workflow_term
+    definition: |
+      A slash command invoking a specific workflow step. Examples: `/speckit.specify`,
+      `/speckit.plan`, `/speckit.implement`.
+    aliases:
+      - slash command
+    related_terms:
+      - clarify
+      - analyze
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: clarify
+    term: Clarify
+    category: workflow_term
+    definition: |
+      Workflow step (`/speckit.clarify`) for identifying and resolving specification
+      ambiguities before planning.
+    aliases: []
+    related_terms:
+      - needs-clarification-marker
+      - feature-specification
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: analyze
+    term: Analyze
+    category: workflow_term
+    definition: |
+      Workflow step (`/speckit.analyze`) for cross-artifact consistency validation.
+      Detects duplications, ambiguities, and coverage gaps.
+    aliases: []
+    related_terms:
+      - specification-quality-checklist
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: pre-implementation-gates
+    term: Pre-Implementation Gates
+    category: workflow_term
+    definition: |
+      Constitution-based checkpoints (Simplicity Gate, Anti-Abstraction Gate,
+      Integration-First Gate) validated before implementation begins.
+    aliases:
+      - gates
+    related_terms:
+      - constitution
+      - constitutional-articles
+    source_refs:
+      - docs/references/spec-kit/memory/constitution.md
+
+  # Artifact Terms
+  - id: feature-specification
+    term: Spec (Feature Specification)
+    category: artifact_term
+    definition: |
+      Technology-agnostic description of what to build and why (`spec.md`).
+      Contains user scenarios, functional requirements, entities, and success
+      criteria.
+    aliases:
+      - spec
+      - spec.md
+    related_terms:
+      - implementation-plan
+      - needs-clarification-marker
+    source_refs:
+      - docs/references/spec-kit/templates/spec-template.md
+
+  - id: implementation-plan
+    term: Plan (Implementation Plan)
+    category: artifact_term
+    definition: |
+      Technical architecture translating specifications into technical decisions
+      (`plan.md`). Maps requirements to technology choices with rationale.
+    aliases:
+      - plan
+      - plan.md
+    related_terms:
+      - feature-specification
+      - tasks
+    source_refs:
+      - docs/references/spec-kit/templates/plan-template.md
+
+  - id: tasks
+    term: Tasks
+    category: artifact_term
+    definition: |
+      Executable task list derived from the plan (`tasks.md`). Organized in phases
+      with parallel markers (`[P]`) and story associations (`[Story]`).
+    aliases:
+      - tasks.md
+    related_terms:
+      - implementation-plan
+    source_refs:
+      - docs/references/spec-kit/templates/tasks-template.md
+
+  - id: research
+    term: Research
+    category: artifact_term
+    definition: |
+      Investigation of technology choices and unknowns (`research.md`). Created
+      during planning when decisions require research.
+    aliases:
+      - research.md
+    related_terms:
+      - implementation-plan
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: data-model
+    term: Data Model
+    category: artifact_term
+    definition: |
+      Entity schemas and relationships (`data-model.md`). Defines the data
+      structures for the feature.
+    aliases:
+      - data-model.md
+    related_terms:
+      - implementation-plan
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: contracts
+    term: Contracts
+    category: artifact_term
+    definition: |
+      API specifications in `contracts/` directory. Includes OpenAPI/GraphQL
+      definitions for service interfaces.
+    aliases: []
+    related_terms:
+      - implementation-plan
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: quickstart
+    term: Quickstart
+    category: artifact_term
+    definition: |
+      Key validation scenarios (`quickstart.md`). Describes critical paths for
+      testing the implementation.
+    aliases:
+      - quickstart.md
+    related_terms:
+      - feature-specification
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  # Quality Terms
+  - id: needs-clarification-marker
+    term: Needs Clarification Marker
+    category: quality_term
+    definition: |
+      Tag `[NEEDS CLARIFICATION]` indicating ambiguous areas in specification.
+      Maximum 3 per specification to prevent assumption-making.
+    aliases: []
+    related_terms:
+      - clarify
+      - feature-specification
+    source_refs:
+      - docs/references/spec-kit/templates/spec-template.md
+
+  - id: specification-quality-checklist
+    term: Specification Quality Checklist
+    category: quality_term
+    definition: |
+      Validation checklist ensuring specification completeness and feature readiness.
+      Acts as "unit tests" for the specification.
+    aliases: []
+    related_terms:
+      - analyze
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: complexity-tracking
+    term: Complexity Tracking
+    category: quality_term
+    definition: |
+      Section in implementation plan documenting justified violations of constitution
+      principles.
+    aliases: []
+    related_terms:
+      - implementation-plan
+      - constitution
+    source_refs:
+      - docs/references/spec-kit/templates/plan-template.md
+
+  # Constitutional Articles
+  - id: constitutional-articles
+    term: Constitutional Articles
+    category: core_concept
+    definition: |
+      Nine articles defining spec-kit's architectural DNA: I (Library-First),
+      II (CLI Interface Mandate), III (Test-First Imperative), VII (Simplicity),
+      VIII (Anti-Abstraction), IX (Integration-First Testing).
+    aliases:
+      - articles
+    related_terms:
+      - constitution
+    source_refs:
+      - docs/references/spec-kit/memory/constitution.md
+
+  # Directory Terms
+  - id: specify-directory
+    term: .specify/
+    category: directory_term
+    definition: |
+      Root directory containing all spec-kit files: memory, scripts, specs,
+      and templates.
+    aliases:
+      - specify directory
+    related_terms:
+      - memory
+      - templates
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: memory
+    term: Memory
+    category: directory_term
+    definition: |
+      Persistent context directory (`.specify/memory/`) containing constitution
+      and other project-level context.
+    aliases: []
+    related_terms:
+      - constitution
+      - specify-directory
+    source_refs:
+      - docs/references/spec-kit/README.md
+
+  - id: templates
+    term: Templates
+    category: directory_term
+    definition: |
+      Document templates (`.specify/templates/`) for specifications, plans,
+      and tasks.
+    aliases: []
+    related_terms:
+      - specify-directory
+    source_refs:
+      - docs/references/spec-kit/README.md

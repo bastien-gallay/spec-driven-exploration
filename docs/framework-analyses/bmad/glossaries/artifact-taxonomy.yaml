@@ -1,0 +1,353 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/artifact-taxonomy.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: bmad
+  last_updated: "2026-01-30"
+
+artifacts:
+  # Phase 1: Analysis (Optional)
+  - id: brainstorming-report
+    name: Brainstorming Report
+    file_pattern: "{{planning_artifacts}}/brainstorming-report.md"
+    description: >-
+      Session results and ideation outcomes from structured brainstorming
+      using 60+ facilitation techniques.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_project
+      creator: Mary (Analyst)
+      format: markdown
+    sections:
+      - name: Setup
+        required: true
+        purpose: Define topic, goals, constraints
+      - name: Ideas
+        required: true
+        purpose: Captured ideas from session
+      - name: Themes
+        required: true
+        purpose: Grouped and organized ideas
+      - name: Next Steps
+        required: true
+        purpose: Action items for top ideas
+    dependencies:
+      produces:
+        - product-brief
+
+  - id: product-brief
+    name: Product Brief
+    file_pattern: "{{planning_artifacts}}/product-brief.md"
+    description: >-
+      Strategic vision document defining product strategy, high-level goals,
+      and direction for the project.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Mary (Analyst)
+      format: markdown
+    sections:
+      - name: Vision
+        required: true
+        purpose: Product vision statement
+      - name: Goals
+        required: true
+        purpose: High-level objectives
+      - name: Strategy
+        required: true
+        purpose: Approach to achieve goals
+    dependencies:
+      requires:
+        - brainstorming-report
+      produces:
+        - prd
+
+  # Phase 2: Planning
+  - id: prd
+    name: PRD (Product Requirements Document)
+    file_pattern: "{{planning_artifacts}}/PRD.md"
+    description: >-
+      Comprehensive requirements document defining functional and non-functional
+      requirements, personas, metrics, and risks.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_project
+      creator: John (PM)
+      format: markdown
+    sections:
+      - name: Problem Statement
+        required: true
+        purpose: Define the problem being solved
+      - name: Target Users
+        required: true
+        purpose: User segments
+      - name: User Personas
+        required: true
+        purpose: Detailed persona descriptions
+      - name: Functional Requirements
+        required: true
+        purpose: What the system must do
+      - name: Non-Functional Requirements
+        required: true
+        purpose: Quality attributes
+      - name: Success Metrics
+        required: true
+        purpose: How success is measured
+      - name: Risks and Mitigations
+        required: true
+        purpose: Identified risks and plans
+    dependencies:
+      requires:
+        - product-brief
+      produces:
+        - architecture
+        - ux-spec
+
+  - id: ux-spec
+    name: UX Specification
+    file_pattern: "{{planning_artifacts}}/ux-spec.md"
+    description: >-
+      User experience design document defining interaction patterns, wireframes,
+      and user flows.
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: Sally (UX Designer)
+      format: markdown
+    sections:
+      - name: User Flows
+        required: true
+        purpose: Key user journeys
+      - name: Wireframes
+        required: false
+        purpose: Visual layouts
+      - name: Interaction Patterns
+        required: true
+        purpose: UI behavior specifications
+    dependencies:
+      requires:
+        - prd
+      produces:
+        - epic
+
+  # Phase 3: Solutioning
+  - id: architecture
+    name: Architecture Document
+    file_pattern: "{{planning_artifacts}}/architecture.md"
+    description: >-
+      Technical design document containing system architecture, component
+      interactions, integration patterns, and Architecture Decision Records.
+    classifications:
+      purpose: design
+      lifecycle: once_per_project
+      creator: Winston (Architect)
+      format: markdown
+    sections:
+      - name: System Overview
+        required: true
+        purpose: High-level system design
+      - name: Components
+        required: true
+        purpose: Component definitions
+      - name: Integration Patterns
+        required: true
+        purpose: How components interact
+      - name: ADRs
+        required: true
+        purpose: Technical decisions with rationale
+      - name: Technology Stack
+        required: true
+        purpose: Technology choices
+    dependencies:
+      requires:
+        - prd
+      produces:
+        - epic
+
+  - id: epic
+    name: Epic File
+    file_pattern: "{{planning_artifacts}}/epics/epic-{name}.md"
+    description: >-
+      High-level feature grouping containing related user stories, created
+      from PRD requirements.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_feature
+      creator: John (PM) / Bob (SM)
+      format: markdown
+    sections:
+      - name: Description
+        required: true
+        purpose: Epic overview
+      - name: Stories
+        required: true
+        purpose: List of stories in epic
+      - name: Acceptance Criteria
+        required: true
+        purpose: Epic-level success criteria
+    dependencies:
+      requires:
+        - prd
+        - architecture
+      produces:
+        - story
+
+  # Phase 4: Implementation
+  - id: sprint-status
+    name: Sprint Status
+    file_pattern: "{{implementation_artifacts}}/sprint-status.yaml"
+    description: >-
+      YAML file tracking epics and stories across sprints, initialized during
+      Sprint Planning.
+    classifications:
+      purpose: execution
+      lifecycle: continuous
+      creator: Bob (SM)
+      format: yaml
+    sections:
+      - name: Current Sprint
+        required: true
+        purpose: Active sprint info
+      - name: Stories
+        required: true
+        purpose: Story status tracking
+    dependencies:
+      requires:
+        - epic
+
+  - id: story
+    name: Story File
+    file_pattern: "{{implementation_artifacts}}/stories/story-{slug}.md"
+    description: >-
+      Individual implementable unit of work with tasks, subtasks, and
+      acceptance criteria.
+    classifications:
+      purpose: execution
+      lifecycle: once_per_feature
+      creator: Bob (SM)
+      format: markdown
+    sections:
+      - name: Description
+        required: true
+        purpose: Story overview
+      - name: Acceptance Criteria
+        required: true
+        purpose: Definition of done
+      - name: Tasks
+        required: true
+        purpose: Implementation steps
+      - name: Technical Notes
+        required: false
+        purpose: Implementation guidance
+      - name: Dependencies
+        required: false
+        purpose: Related stories
+    dependencies:
+      requires:
+        - epic
+        - architecture
+
+  - id: project-context
+    name: Project Context
+    file_pattern: "{{implementation_artifacts}}/project-context.md"
+    description: >-
+      Brownfield support document describing existing codebase patterns, rules,
+      and constraints that all implementation workflows must observe.
+    classifications:
+      purpose: governance
+      lifecycle: continuous
+      creator: Mary (Analyst)
+      format: markdown
+    sections:
+      - name: Codebase Patterns
+        required: true
+        purpose: Existing code conventions
+      - name: Technology Constraints
+        required: true
+        purpose: Tech stack rules
+      - name: Rules
+        required: true
+        purpose: Implementation rules
+    dependencies: {}
+
+  # Quick Flow
+  - id: tech-spec
+    name: Tech Spec
+    file_pattern: "{{planning_artifacts}}/tech-spec.md"
+    description: >-
+      Focused technical specification for Quick Flow, replacing full PRD and
+      Architecture for simple changes.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_feature
+      creator: Barry (Quick Flow Dev)
+      format: markdown
+    sections:
+      - name: Problem
+        required: true
+        purpose: What needs to change
+      - name: Solution
+        required: true
+        purpose: How to change it
+      - name: Testing
+        required: true
+        purpose: How to verify
+    dependencies:
+      produces:
+        - implementation
+
+  # Validation Artifacts
+  - id: readiness-check
+    name: Implementation Readiness Check
+    file_pattern: "{{planning_artifacts}}/readiness-check.md"
+    description: >-
+      Gate validation before Phase 4 with outcomes: PASS, CONCERNS, or FAIL.
+    classifications:
+      purpose: validation
+      lifecycle: per_session
+      creator: Various agents
+      format: markdown
+    sections:
+      - name: Checklist
+        required: true
+        purpose: Validation criteria
+      - name: Result
+        required: true
+        purpose: PASS/CONCERNS/FAIL
+      - name: Issues
+        required: false
+        purpose: Problems found
+    dependencies:
+      requires:
+        - prd
+        - architecture
+        - epic
+
+  - id: code-review
+    name: Code Review Report
+    file_pattern: "{{implementation_artifacts}}/reviews/review-{story}.md"
+    description: >-
+      Multi-dimensional quality validation covering functional correctness,
+      code quality, test coverage, and architecture alignment.
+    classifications:
+      purpose: validation
+      lifecycle: per_session
+      creator: Various agents
+      format: markdown
+    sections:
+      - name: Functional Check
+        required: true
+        purpose: Does it work?
+      - name: Code Quality
+        required: true
+        purpose: Is it clean?
+      - name: Test Coverage
+        required: true
+        purpose: Is it tested?
+      - name: Architecture Alignment
+        required: true
+        purpose: Does it follow ADRs?
+    dependencies:
+      requires:
+        - story
+        - architecture

@@ -1,0 +1,322 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/concept-mapping.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: bmad
+  last_updated: "2026-01-30"
+
+relationships:
+  # Phase progression
+  - source: product-brief
+    target: prd
+    type: precedes
+    notes: Product brief feeds into PRD creation
+
+  - source: prd
+    target: architecture
+    type: precedes
+    notes: PRD requirements inform architecture decisions
+
+  - source: prd
+    target: ux-spec
+    type: precedes
+    notes: PRD requirements guide UX design
+
+  - source: architecture
+    target: epic
+    type: precedes
+    notes: Architecture ADRs constrain epic design
+
+  - source: epic
+    target: story
+    type: produces
+    notes: Epics decompose into stories
+
+  - source: story
+    target: implementation
+    type: produces
+    notes: Stories guide implementation
+
+  # Artifact production
+  - source: brainstorming-report
+    target: product-brief
+    type: produces
+    notes: Brainstorming outputs feed product brief
+
+  - source: architecture
+    target: adr
+    type: contains
+    notes: Architecture document contains ADRs
+
+  - source: sprint-status
+    target: story
+    type: references
+    notes: Sprint status tracks story progress
+
+  # Validation relationships
+  - source: readiness-check
+    target: prd
+    type: validates
+    notes: Readiness check validates PRD completeness
+
+  - source: readiness-check
+    target: architecture
+    type: validates
+    notes: Readiness check validates architecture alignment
+
+  - source: code-review
+    target: story
+    type: validates
+    notes: Code review validates story implementation
+
+  - source: code-review
+    target: architecture
+    type: validates
+    notes: Code review checks architecture alignment
+
+  # Agent relationships
+  - source: agent-john
+    target: prd
+    type: produces
+    notes: PM creates PRD
+
+  - source: agent-winston
+    target: architecture
+    type: produces
+    notes: Architect creates architecture
+
+  - source: agent-amelia
+    target: implementation
+    type: produces
+    notes: Developer implements stories
+
+  - source: agent-bob
+    target: sprint-status
+    type: produces
+    notes: Scrum Master manages sprint status
+
+  # Quick Flow path
+  - source: tech-spec
+    target: implementation
+    type: produces
+    notes: Tech spec directly guides Quick Flow implementation
+
+  # Context loading
+  - source: project-context
+    target: implementation
+    type: enables
+    notes: Project context provides brownfield rules
+
+cross_framework_mappings:
+  - local_term: prd
+    mappings:
+      - framework: spec-kit
+        term: feature-specification
+        match_level: partial
+        notes: PRD is broader than feature spec, covers full product
+      - framework: openspec
+        term: proposal
+        match_level: partial
+        notes: PRD combines proposal and specs scope
+      - framework: common-sdd
+        term: specification
+        match_level: exact
+        notes: Primary requirements document
+
+  - local_term: architecture
+    mappings:
+      - framework: spec-kit
+        term: implementation-plan
+        match_level: partial
+        notes: Different focus - BMAD is design, spec-kit is execution plan
+      - framework: openspec
+        term: design
+        match_level: exact
+        notes: Both capture technical decisions
+      - framework: common-sdd
+        term: design-document
+        match_level: exact
+        notes: Technical design artifact
+
+  - local_term: story
+    mappings:
+      - framework: spec-kit
+        term: task
+        match_level: exact
+        notes: Both represent implementable units
+      - framework: openspec
+        term: task
+        match_level: exact
+        notes: Both represent implementation steps
+      - framework: common-sdd
+        term: work-item
+        match_level: exact
+        notes: Implementable unit of work
+
+  - local_term: epic
+    mappings:
+      - framework: spec-kit
+        term: feature
+        match_level: partial
+        notes: Epic is grouping, feature is spec
+      - framework: openspec
+        term: feature
+        match_level: partial
+        notes: Similar scope grouping
+      - framework: common-sdd
+        term: feature-group
+        match_level: exact
+        notes: Collection of related work
+
+  - local_term: phase
+    mappings:
+      - framework: spec-kit
+        term: stage
+        match_level: partial
+        notes: spec-kit has commands not phases
+      - framework: openspec
+        term: N/A
+        match_level: none
+        notes: OpenSpec is fluid, no phases
+      - framework: common-sdd
+        term: phase
+        match_level: exact
+        notes: Sequential development stage
+
+  - local_term: agent
+    mappings:
+      - framework: spec-kit
+        term: command
+        match_level: low
+        notes: Different concept - agent is persona, command is action
+      - framework: openspec
+        term: N/A
+        match_level: none
+        notes: No agent concept in OpenSpec
+      - framework: common-sdd
+        term: role
+        match_level: partial
+        notes: Agent is AI persona with role
+
+  - local_term: workflow
+    mappings:
+      - framework: spec-kit
+        term: command
+        match_level: partial
+        notes: Both are guided processes
+      - framework: openspec
+        term: opsx-command
+        match_level: partial
+        notes: Similar structured process concept
+      - framework: common-sdd
+        term: process
+        match_level: exact
+        notes: Guided sequence of steps
+
+  - local_term: quick-flow
+    mappings:
+      - framework: spec-kit
+        term: N/A
+        match_level: none
+        notes: No explicit fast track in spec-kit
+      - framework: openspec
+        term: delta-spec
+        match_level: low
+        notes: Different mechanism for small changes
+      - framework: common-sdd
+        term: fast-track
+        match_level: exact
+        notes: Minimum ceremony path
+
+  - local_term: product-brief
+    mappings:
+      - framework: spec-kit
+        term: constitution
+        match_level: low
+        notes: Product brief is strategic, constitution is governance
+      - framework: openspec
+        term: proposal
+        match_level: partial
+        notes: Both are early strategic documents
+      - framework: common-sdd
+        term: vision-document
+        match_level: exact
+        notes: Strategic vision artifact
+
+  - local_term: readiness-check
+    mappings:
+      - framework: spec-kit
+        term: analyze
+        match_level: partial
+        notes: Both are validation steps
+      - framework: openspec
+        term: N/A
+        match_level: none
+        notes: No explicit gate in OpenSpec
+      - framework: common-sdd
+        term: gate-check
+        match_level: exact
+        notes: Validation gate before phase
+
+unique_concepts:
+  - id: party-mode
+    name: Party Mode
+    description: >-
+      Multi-agent collaboration in a single conversation where multiple
+      specialized agents participate, orchestrated by BMad Master.
+    why_unique: >-
+      Agent-centric approach unique to BMAD. Other frameworks don't have
+      multi-agent collaboration concept.
+
+  - id: adversarial-review
+    name: Adversarial Review
+    description: >-
+      Review technique where the reviewer MUST find issues, preventing
+      confirmation bias by assuming problems exist.
+    why_unique: >-
+      Explicit quality technique forcing genuine analysis. Other frameworks
+      have reviews but not this forced problem-finding approach.
+
+  - id: agent-personas
+    name: Agent Personas
+    description: >-
+      Named experts (John, Winston, Amelia, etc.) with distinct identities,
+      communication styles, and specialized expertise.
+    why_unique: >-
+      Human-like collaboration model with personality. Other frameworks
+      use commands or processes, not characterized agents.
+
+  - id: step-file-architecture
+    name: Step-File Architecture
+    description: >-
+      Micro-file workflow design where each step is self-contained, loaded
+      just-in-time, and executed sequentially.
+    why_unique: >-
+      Implementation detail unique to BMAD enabling context isolation
+      and reproducibility. Other frameworks use monolithic prompts.
+
+  - id: tri-modal-workflows
+    name: Tri-Modal Workflows
+    description: >-
+      Workflows supporting Create, Validate, and Edit modes for key artifacts
+      like PRD.
+    why_unique: >-
+      Workflow flexibility pattern allowing different operation modes.
+      Other frameworks typically have single-mode processes.
+
+  - id: solutioning-phase
+    name: Solutioning Phase
+    description: >-
+      Dedicated phase for preventing agent conflicts through Architecture
+      Decision Records before implementation begins.
+    why_unique: >-
+      BMAD uniquely focuses on conflict prevention as a distinct phase.
+      Other frameworks may have design but not explicit conflict prevention.
+
+  - id: bmad-master
+    name: BMad Master Agent
+    description: >-
+      Core orchestrator agent managing Party Mode and multi-agent coordination.
+    why_unique: >-
+      Meta-agent concept for orchestrating other agents. Unique to BMAD's
+      multi-agent architecture.

@@ -1,0 +1,293 @@
+# yaml-language-server: $schema=../../../../.assist/schemas/artifact-taxonomy.schema.yaml
+schema_version: "1.0"
+
+metadata:
+  framework: openspec
+  last_updated: "2026-01-30"
+
+artifacts:
+  # Core Artifacts (Active Change)
+  - id: proposal
+    name: Proposal
+    file_pattern: "openspec/changes/{change-name}/proposal.md"
+    description: >-
+      Document capturing intent, scope, and approach. Contains WHY the change
+      is needed, scope boundaries, and high-level strategy.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_feature
+      creator: /opsx:new or /opsx:continue
+      format: markdown
+    sections:
+      - name: Why
+        required: true
+        purpose: Problem and motivation for the change
+      - name: Scope
+        required: true
+        purpose: In-scope and out-of-scope boundaries
+      - name: Approach
+        required: true
+        purpose: High-level strategy
+      - name: Capabilities
+        required: false
+        purpose: New and modified capabilities
+      - name: Impact
+        required: false
+        purpose: Affected systems
+    dependencies:
+      produces:
+        - delta-spec
+        - design
+
+  - id: delta-spec
+    name: Delta Spec
+    file_pattern: "openspec/changes/{change-name}/specs/{domain}/spec.md"
+    description: >-
+      Change-focused specification using ADDED, MODIFIED, and REMOVED sections.
+      Focuses on what's changing rather than full specification rewrites.
+    classifications:
+      purpose: specification
+      lifecycle: once_per_feature
+      creator: /opsx:continue
+      format: markdown
+    sections:
+      - name: ADDED Requirements
+        required: false
+        purpose: New behavior to add
+      - name: MODIFIED Requirements
+        required: false
+        purpose: Changed behavior (full updated content)
+      - name: REMOVED Requirements
+        required: false
+        purpose: Deprecated features with reason
+    dependencies:
+      requires:
+        - proposal
+      produces:
+        - tasks
+
+  - id: design
+    name: Design
+    file_pattern: "openspec/changes/{change-name}/design.md"
+    description: >-
+      Technical approach document explaining HOW to implement the change.
+      Contains decisions, rationale, and trade-offs.
+    classifications:
+      purpose: design
+      lifecycle: once_per_feature
+      creator: /opsx:continue
+      format: markdown
+    sections:
+      - name: Context
+        required: true
+        purpose: Background and constraints
+      - name: Goals/Non-Goals
+        required: true
+        purpose: Explicit boundaries
+      - name: Decisions
+        required: true
+        purpose: Technical choices with rationale
+      - name: Risks/Trade-offs
+        required: false
+        purpose: Known limitations
+      - name: Migration Plan
+        required: false
+        purpose: Deployment strategy
+      - name: Open Questions
+        required: false
+        purpose: Unresolved decisions
+    dependencies:
+      requires:
+        - proposal
+      produces:
+        - tasks
+
+  - id: tasks
+    name: Tasks
+    file_pattern: "openspec/changes/{change-name}/tasks.md"
+    description: >-
+      Implementation checklist with checkbox format for tracking progress.
+      Small, completable steps ordered by dependency.
+    classifications:
+      purpose: execution
+      lifecycle: once_per_feature
+      creator: /opsx:continue
+      format: markdown
+    sections:
+      - name: Phase (numbered)
+        required: true
+        purpose: Grouping of related tasks
+      - name: Task (checkbox)
+        required: true
+        purpose: Individual implementation step
+    dependencies:
+      requires:
+        - delta-spec
+        - design
+
+  # Main Specs (Source of Truth)
+  - id: domain-spec
+    name: Domain Specification
+    file_pattern: "openspec/specs/{domain}/spec.md"
+    description: >-
+      Source of truth for current system behavior in a domain. Updated via
+      /opsx:sync when delta specs are merged.
+    classifications:
+      purpose: specification
+      lifecycle: continuous
+      creator: /opsx:sync
+      format: markdown
+    sections:
+      - name: Purpose
+        required: true
+        purpose: Domain description
+      - name: Requirements
+        required: true
+        purpose: Numbered requirements using RFC 2119 keywords
+      - name: Scenarios
+        required: true
+        purpose: Given/When/Then format test scenarios
+    dependencies: {}
+
+  # Configuration Artifacts
+  - id: project-config
+    name: Project Configuration
+    file_pattern: "openspec/config.yaml"
+    description: >-
+      Project-level configuration defining schema, context, and per-artifact
+      rules. Enables project-specific customization.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Manual setup
+      format: yaml
+    sections:
+      - name: schema
+        required: true
+        purpose: Workflow schema to use
+      - name: context
+        required: false
+        purpose: Tech stack, conventions for context injection
+      - name: rules
+        required: false
+        purpose: Per-artifact constraints
+    dependencies: {}
+
+  - id: change-metadata
+    name: Change Metadata
+    file_pattern: "openspec/changes/{change-name}/.openspec.yaml"
+    description: >-
+      Per-change metadata file allowing schema override and tracking creation
+      date.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_feature
+      creator: /opsx:new
+      format: yaml
+    sections:
+      - name: schema
+        required: false
+        purpose: Optional schema override
+      - name: created
+        required: true
+        purpose: Change creation date
+    dependencies: {}
+
+  - id: schema-definition
+    name: Schema Definition
+    file_pattern: "openspec/schemas/{schema-name}/schema.yaml"
+    description: >-
+      Custom workflow schema defining artifacts, dependencies, templates, and
+      instructions for a specific workflow pattern.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: openspec schema init
+      format: yaml
+    sections:
+      - name: name
+        required: true
+        purpose: Schema identifier
+      - name: artifacts
+        required: true
+        purpose: Artifact definitions with dependencies
+      - name: apply
+        required: false
+        purpose: Apply command configuration
+    dependencies: {}
+
+  # Archived Artifacts
+  - id: archived-change
+    name: Archived Change
+    file_pattern: "openspec/changes/archive/{date}-{change-name}/"
+    description: >-
+      Complete snapshot of a finished change including all artifacts. Preserves
+      full context for historical record and audit trail.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_feature
+      creator: /opsx:archive
+      format: mixed
+    sections:
+      - name: All change artifacts
+        required: true
+        purpose: Complete change snapshot
+    dependencies:
+      requires:
+        - proposal
+        - delta-spec
+        - design
+        - tasks
+
+  # Schema Templates
+  - id: proposal-template
+    name: Proposal Template
+    file_pattern: "openspec/schemas/{schema-name}/templates/proposal.md"
+    description: >-
+      Template markdown structure for proposal artifacts. Defines required
+      sections and formatting.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Schema author
+      format: markdown
+    dependencies: {}
+
+  - id: spec-template
+    name: Spec Template
+    file_pattern: "openspec/schemas/{schema-name}/templates/spec.md"
+    description: >-
+      Template markdown structure for specification artifacts. Includes
+      RFC 2119 keyword guidance and scenario format.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Schema author
+      format: markdown
+    dependencies: {}
+
+  - id: design-template
+    name: Design Template
+    file_pattern: "openspec/schemas/{schema-name}/templates/design.md"
+    description: >-
+      Template markdown structure for design artifacts. Defines sections
+      for decisions, rationale, and trade-offs.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Schema author
+      format: markdown
+    dependencies: {}
+
+  - id: tasks-template
+    name: Tasks Template
+    file_pattern: "openspec/schemas/{schema-name}/templates/tasks.md"
+    description: >-
+      Template markdown structure for tasks artifacts. Defines checkbox
+      format and phase organization.
+    classifications:
+      purpose: governance
+      lifecycle: once_per_project
+      creator: Schema author
+      format: markdown
+    dependencies: {}
