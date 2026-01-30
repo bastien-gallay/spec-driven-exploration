@@ -6,19 +6,24 @@ last_updated: "2026-01-30T00:00:00Z"
 stages:
   themes:
     concepts:
-      status: pending
+      status: completed
+      last_updated: "2026-01-30T00:00:00Z"
     workflows:
-      status: pending
+      status: completed
+      last_updated: "2026-01-30T00:00:00Z"
     artifacts:
-      status: pending
+      status: completed
+      last_updated: "2026-01-30T00:00:00Z"
     roles:
-      status: pending
+      status: completed
+      last_updated: "2026-01-30T00:00:00Z"
     tooling:
-      status: pending
+      status: completed
+      last_updated: "2026-01-30T00:00:00Z"
   validation:
-    last_run: null
-    status: not-started
+    last_run: "2026-01-30T10:00:00Z"
+    status: passed
     errors: 0
     warnings: 0
 
-overall_completion: 0
+overall_completion: 100
